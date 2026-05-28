@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Support Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --purple: #534AB7;
+    --purple-light: #EEEDFE;
+    --purple-dark: #3C3489;
+    --teal: #1D9E75;
+    --teal-light: #E1F5EE;
+    --amber: #BA7517;
+    --amber-light: #FAEEDA;
+    --blue: #378ADD;
+    --blue-light: #E6F1FB;
+    --red: #E24B4A;
+    --red-light: #FCEBEB;
+    --coral: #D85A30;
+    --bg: #ffffff;
+    --bg-secondary: #F7F6F3;
+    --bg-tertiary: #F1EFE8;
+    --text: #1a1a1a;
+    --text-secondary: #6b6a65;
+    --text-hint: #9e9d98;
+    --border: rgba(0,0,0,0.1);
+    --border-strong: rgba(0,0,0,0.18);
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg-tertiary);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  /* NAV */
+  header {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .nav-brand {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--purple);
+    padding: 14px 16px 14px 0;
+    margin-right: 12px;
+    border-right: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .nav-item {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 14px 13px;
+    cursor: pointer;
+    border-bottom: 2.5px solid transparent;
+    transition: color 0.15s;
+    white-space: nowrap;
+  }
+  .nav-item:hover { color: var(--text); }
+  .nav-item.active { color: var(--purple); font-weight: 500; border-bottom-color: var(--purple); }
+ 
+  /* MAIN */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 24px 48px;
+  }
+  .page { display: none; }
+  .page.active { display: block; }
+ 
+  /* BANNER */
+  .banner {
+    background: var(--purple-light);
+    border-radius: var(--radius-lg);
+    padding: 36px 32px;
+    margin-bottom: 28px;
+  }
+  .banner h1 { font-size: 28px; font-weight: 600; color: var(--purple-dark); margin-bottom: 8px; }
+  .banner p { font-size: 14px; color: #534AB7; margin-bottom: 22px; line-height: 1.7; }
+  .banner-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--purple-dark); }
+  .btn-outline {
+    background: transparent;
+    color: var(--purple);
+    border: 1px solid var(--purple);
+    padding: 10px 22px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+  }
+  .btn-outline:hover { background: var(--purple-light); }
+  .btn-sm {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-strong);
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+  }
+  .btn-sm:hover { background: var(--bg-secondary); }
+
+  .btn-save-schedule {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+  }
+  .btn-save-schedule:hover { background: var(--purple-dark); }
+ 
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+ 
+  /* DASHBOARD GRID */
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .dash-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+  }
+  .dash-card .icon {
+    font-size: 22px;
+    margin-bottom: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .dash-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  .dash-card p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.7; }
+ 
+  /* TABLE */
+  .table-wrap {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table th { text-align: left; padding: 10px 16px; color: var(--text-secondary); font-weight: 600; font-size: 12px; background: var(--bg-secondary); border-bottom: 1px solid var(--border); letter-spacing: 0.02em; }
+  table td { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  table tr:last-child td { border-bottom: none; }
+  table tr:hover td { background: var(--bg-secondary); }
+ 
+  /* INPUT STYLE IN TABLE */
+  table td input {
+    width: 100%;
+    padding: 4px 8px;
+    border: 1px solid var(--purple);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+  }
+
+  /* HOMEWORK */
+  .hw-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .hw-card:hover { background: var(--bg-secondary); }
+  .hw-check {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-strong);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s;
+    color: transparent;
+    font-size: 13px;
+  }
+  .hw-check.done { background: var(--teal); border-color: var(--teal); color: #fff; }
+  .hw-info { flex: 1; }
+  .hw-title { font-size: 13.5px; font-weight: 500; }
+  .hw-due { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .badge { font-size: 11px; padding: 3px 11px; border-radius: 99px; font-weight: 500; white-space: nowrap; }
+  .badge-pending { background: var(--amber-light); color: var(--amber); }
+  .badge-done { background: var(--teal-light); color: var(--teal); }
+  .hw-hint { font-size: 12px; color: var(--text-hint); margin-top: 10px; }
+ 
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 9px; top: 8px; bottom: 8px; width: 1px; background: var(--border-strong); }
+  .tl-item { position: relative; margin-bottom: 24px; }
+  .tl-dot { position: absolute; left: -26px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--purple); border: 2px solid var(--bg-tertiary); }
+  .tl-month { font-size: 12px; color: var(--purple); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .tl-event { font-size: 14px; color: var(--text); }
+ 
+  /* ATTENDANCE */
+  .att-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
+  .att-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; text-align: center; }
+  .att-num { font-size: 32px; font-weight: 600; }
+  .att-label { font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; font-weight: 500; }
+  .att-absent .att-num { color: var(--red); }
+  .att-leave .att-num { color: var(--blue); }
+  .att-late .att-num { color: var(--amber); }
+ 
+  /* HOLIDAYS */
+  .holiday-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+  .holiday-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; }
+  .hl-badge { font-size: 11px; padding: 4px 11px; border-radius: 99px; font-weight: 500; display: inline-block; margin-bottom: 12px; }
+  .hl-holiday { background: var(--teal-light); color: var(--teal); }
+  .hl-exam { background: var(--purple-light); color: var(--purple); }
+  .hl-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .hl-date { font-size: 12.5px; color: var(--text-secondary); }
+ 
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 24px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  footer p { font-size: 12.5px; color: var(--text-secondary); line-height: 2; }
+  footer strong { color: var(--purple); font-weight: 600; }
+</style>
+</head>
+<body>
+ 
+<header>
+  <nav class="nav-inner">
+    <span class="nav-brand">Student Support Hub</span>
+    <span class="nav-item active" onclick="showPage('home',this)">หน้าแรก</span>
+    <span class="nav-item" onclick="showPage('schedule',this)">ตารางเรียน</span>
+    <span class="nav-item" onclick="showPage('homework',this)">การบ้าน</span>
+    <span class="nav-item" onclick="showPage('activities',this)">กิจกรรม</span>
+    <span class="nav-item" onclick="showPage('attendance',this)">การเข้าเรียน</span>
+    <span class="nav-item" onclick="showPage('holidays',this)">วันหยุด</span>
+  </nav>
+</header>
+ 
+<main>
+ 
+  <section id="home" class="page active">
+    <div class="banner">
+      <h1>Student Support Hub</h1>
+      <p>เว็บไซต์สำหรับช่วยติดตามการเรียน ตารางเรียน การบ้าน และข้อมูลสำคัญของนักเรียน</p>
+      <div class="banner-btns">
+        <button class="btn-primary" onclick="showPage('schedule', document.querySelectorAll('.nav-item')[1])">ตารางเรียน</button>
+        <button class="btn-outline" onclick="showPage('homework', document.querySelectorAll('.nav-item')[2])">เช็กการบ้าน</button>
+      </div>
+    </div>
+ 
+    <p class="section-title">Dashboard</p>
+    <div class="grid-4">
+      <div class="dash-card">
+        <div class="icon" style="background:#EEEDFE;">📚</div>
+        <h3 style="color:var(--purple-dark);">ตารางเรียนวันนี้</h3>
+        <p id="dash-schedule">Business Technology — 09:00<br>Web Design — 13:00</p>
+      </div>
+      <div class="dash-card">
+        <div class="icon" style="background:var(--amber-light);">📝</div>
+        <h3 style="color:var(--amber);">งานใกล้ครบกำหนด</h3>
+        <p>Project report – Friday<br>Marketing assignment – Monday</p>
+      </div>
+      <div class="dash-card">
+        <div class="icon" style="background:var(--teal-light);">📢</div>
+        <h3 style="color:var(--teal);">กิจกรรม</h3>
+        <p>นำเสนอโครงงาน<br>Open house</p>
+      </div>
+      <div class="dash-card">
+        <div class="icon" style="background:#FAECE7;">⏰</div>
+        <h3 style="color:var(--coral);">แจ้งเตือน</h3>
+        <p>เข้าเรียนอีก 15 นาที</p>
+      </div>
+    </div>
+  </section>
+ 
+  <section id="schedule" class="page">
+    <p class="section-title">ตารางเรียน</p>
+    <div class="table-wrap">
+      <table id="scheduleTable">
+        <thead>
+          <tr><th>วัน</th><th>วิชา</th><th>เวลา</th><th>ห้อง</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>จันทร์</td><td class="editable">Business Technology</td><td class="editable">09:00</td><td class="editable">B201</td></tr>
+          <tr><td>อังคาร</td><td class="editable">Web Design</td><td class="editable">13:00</td><td class="editable">Lab 2</td></tr>
+          <tr><td>พุธ</td><td class="editable">Marketing</td><td class="editable">10:00</td><td class="editable">B105</td></tr>
+          <tr><td>พฤหัสบดี</td><td class="editable">เทคโนโลยีธุรกิจดิจิทัล</td><td class="editable">09:00</td><td class="editable">B201</td></tr>
+          <tr><td>ศุกร์</td><td class="editable">Project Workshop</td><td class="editable">13:00</td><td class="editable">Lab 2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div style="display: flex; gap: 10px;">
+      <button id="editBtn" class="btn-sm" onclick="toggleEditSchedule()">✏️ แก้ไขตารางเรียน</button>
+      <button id="saveBtn" class="btn-save-schedule" onclick="saveScheduleData()" style="display: none;">💾 บันทึก</button>
+    </div>
+  </section>
+ 
+  <section id="homework" class="page">
+    <p class="section-title">การบ้าน</p>
+    <div id="hw-list">
+      <div class="hw-card" onclick="toggleHW(this)">
+        <div class="hw-check">✓</div>
+        <div class="hw-info">
+          <div class="hw-title">Web design project</div>
+          <div class="hw-due">📅 Due Friday</div>
+        </div>
+        <span class="badge badge-pending">ยังไม่ส่ง</span>
+      </div>
+      <div class="hw-card" onclick="toggleHW(this)">
+        <div class="hw-check">✓</div>
+        <div class="hw-info">
+          <div class="hw-title">Research report</div>
+          <div class="hw-due">📅 Due Monday</div>
+        </div>
+        <span class="badge badge-pending">ยังไม่ส่ง</span>
+      </div>
+      <div class="hw-card" onclick="toggleHW(this)">
+        <div class="hw-check done">✓</div>
+        <div class="hw-info">
+          <div class="hw-title">Marketing presentation</div>
+          <div class="hw-due">📅 Due last week</div>
+        </div>
+        <span class="badge badge-done">ส่งแล้ว</span>
+      </div>
+    </div>
+    <p class="hw-hint">💡 แตะที่งานเพื่อเปลี่ยนสถานะ</p>
+  </section>
+ 
+  <section id="activities" class="page">
+    <p class="section-title">กิจกรรม</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-month">พฤษภาคม</div>
+        <div class="tl-event">เริ่มโครงงาน</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-month">มิถุนายน</div>
+        <div class="tl-event">ทดสอบเว็บไซต์</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-month">กรกฎาคม</div>
+        <div class="tl-event">เก็บข้อมูล</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-month">กันยายน</div>
+        <div class="tl-event">นำเสนอผลงาน</div>
+      </div>
+    </div>
+  </section>
+ 
+  <section id="attendance" class="page">
+    <p class="section-title">การเข้าเรียน</p>
+    <div class="att-grid">
+      <div class="att-card att-absent">
+        <div class="att-num">1</div>
+        <div class="att-label">ขาด</div>
+      </div>
+      <div class="att-card att-leave">
+        <div class="att-num">2</div>
+        <div class="att-label">ลา</div>
+      </div>
+      <div class="att-card att-late">
+        <div class="att-num">1</div>
+        <div class="att-label">มาสาย</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>วันที่</th><th>วิชา</th><th>สถานะ</th></tr></thead>
+        <tbody>
+          <tr><td>15 พ.ค.</td><td>Web Design</td><td style="color:var(--red);font-weight:500;">ขาด</td></tr>
+          <tr><td>20 พ.ค.</td><td>Marketing</td><td style="color:var(--blue);font-weight:500;">ลา</td></tr>
+          <tr><td>22 พ.ค.</td><td>Business Tech</td><td style="color:var(--blue);font-weight:500;">ลา</td></tr>
+          <tr><td>27 พ.ค.</td><td>Web Design</td><td style="color:var(--amber);font-weight:500;">มาสาย</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+ 
+  <section id="holidays" class="page">
+    <p class="section-title">วันหยุด / วันสำคัญ</p>
+    <div class="holiday-grid">
+      <div class="holiday-card">
+        <span class="hl-badge hl-holiday">วันหยุดนักขัตฤกษ์</span>
+        <div class="hl-title">วันวิสาขบูชา</div>
+        <div class="hl-date">12 พฤษภาคม 2568</div>
+      </div>
+      <div class="holiday-card">
+        <span class="hl-badge hl-exam">สอบกลางภาค</span>
+        <div class="hl-title">Midterm examination</div>
+        <div class="hl-date">16–20 มิถุนายน 2568</div>
+      </div>
+      <div class="holiday-card">
+        <span class="hl-badge hl-exam">สอบปลายภาค</span>
+        <div class="hl-title">Final examination</div>
+        <div class="hl-date">15–19 กันยายน 2568</div>
+      </div>
+      <div class="holiday-card">
+        <span class="hl-badge hl-holiday">วันหยุดนักขัตฤกษ์</span>
+        <div class="hl-title">วันอาสาฬหบูชา</div>
+        <div class="hl-date">10 กรกฎาคม 2568</div>
+      </div>
+    </div>
+  </section>
+ 
+</main>
+ 
+<footer>
+  <p>
+    <strong>Student Support Hub</strong><br>
+    โครงการวิชาชีพสาขาเทคโนโลยีธุรกิจดิจิทัล<br>
+    ผู้จัดทำ: James Johnson และทีมงาน
+  </p>
+</footer>
+ 
+<script>
+// แก้ไขฟังก์ชันให้ชื่อตรงกัน เพื่อเปิด-ปิด หน้าเว็บได้อย่างถูกต้อง
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  const targetPage = document.getElementById(id);
+  if (targetPage) {
+    targetPage.classList.add('active');
+  }
+  if (el) {
+    el.classList.add('active');
+  }
+}
+ 
+function toggleHW(card) {
+  const check = card.querySelector('.hw-check');
+  const badge = card.querySelector('.badge');
+  const isDone = check.classList.contains('done');
+  if (isDone) {
+    check.classList.remove('done');
+    badge.className = 'badge badge-pending';
+    badge.textContent = 'ยังไม่ส่ง';
+  } else {
+    check.classList.add('done');
+    badge.className = 'badge badge-done';
+    badge.textContent = 'ส่งแล้ว';
+  }
+}
+
+// === ระบบแก้ไขและบันทึกตารางเรียน ===
+let isEditing = false;
+
+function toggleEditSchedule() {
+  const cells = document.querySelectorAll('#scheduleTable .editable');
+  const editBtn = document.getElementById('editBtn');
+  const saveBtn = document.getElementById('saveBtn');
+
+  isEditing = !isEditing;
+
+  if (isEditing) {
+    cells.forEach(cell => {
+      const originalText = cell.innerText;
+      cell.innerHTML = `<input type="text" value="${originalText}">`;
+    });
+    editBtn.innerHTML = '❌ ยกเลิก';
+    saveBtn.style.display = 'inline-flex';
+  } else {
+    cells.forEach(cell => {
+      const input = cell.querySelector('input');
+      if (input) {
+        cell.innerText = input.defaultValue;
+      }
+    });
+    editBtn.innerHTML = '✏️ แก้ไขตารางเรียน';
+    saveBtn.style.display = 'none';
+  }
+}
+
+function saveScheduleData() {
+  const cells = document.querySelectorAll('#scheduleTable .editable');
+  const editBtn = document.getElementById('editBtn');
+  const saveBtn = document.getElementById('saveBtn');
+
+  cells.forEach(cell => {
+    const input = cell.querySelector('input');
+    if (input) {
+      cell.innerText = input.value;
+    }
+  });
+
+  // ซิงค์ข้อมูลอัปเดตไปที่ Dashboard หน้าแรก
+  const rows = document.querySelectorAll('#scheduleTable tbody tr');
+  let mondaySubject = rows[0].cells[1].innerText;
+  let mondayTime = rows[0].cells[2].innerText;
+  let tuesdaySubject = rows[1].cells[1].innerText;
+  let tuesdayTime = rows[1].cells[2].innerText;
+  
+  const dashSchedule = document.getElementById('dash-schedule');
+  if (dashSchedule) {
+    dashSchedule.innerHTML = `${mondaySubject} — ${mondayTime}<br>${tuesdaySubject} — ${tuesdayTime}`;
+  }
+
+  isEditing = false;
+  editBtn.innerHTML = '✏️ แก้ไขตารางเรียน';
+  saveBtn.style.display = 'none';
+  
+  alert('บันทึกข้อมูลตารางเรียนเรียบร้อยแล้ว!');
+}
+</script>
+</body>
+</html>
